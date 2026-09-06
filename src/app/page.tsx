@@ -1,69 +1,70 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { HeritageExplorer } from "@/components/heritage-explorer";
+import { TrustSection } from "@/components/trust-section";
+import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
+export default function HomePage() {
+  const { profile, loading } = useAuth();
+  const router = useRouter();
+
+  if (!loading && profile?.role === "artisan") {
+    router.push("/dashboard");
+    return null;
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex flex-col">
+      <section className="relative overflow-hidden px-4 py-20 sm:px-6 sm:py-32">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-2xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-sm font-medium text-gold-dark">
+              <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+              India's Living Heritage Marketplace
+            </span>
+            <h1 className="mt-6 font-serif text-5xl font-semibold leading-tight text-ink sm:text-6xl">
+              Every thread tells a story.
+              <span className="block text-terracotta-dark">Every purchase keeps one alive.</span>
+            </h1>
+            <p className="mt-6 text-lg leading-relaxed text-ink-light">
+              Discover handcrafted treasures from India's vanishing artisan communities. Learn the story behind each piece, meet the maker, and support a craft that has endured for centuries.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/marketplace"
+                className="rounded-full bg-terracotta px-7 py-3.5 text-center font-medium text-cream transition-colors hover:bg-terracotta-dark"
+              >
+                Explore the Marketplace
+              </Link>
+              <Link
+                href="/story-map"
+                className="rounded-full border border-ink/20 px-7 py-3.5 text-center font-medium text-ink transition-colors hover:border-terracotta hover:text-terracotta"
+              >
+                View the Story Map
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="pointer-events-none absolute -right-20 top-10 hidden opacity-10 lg:block">
+          <svg width="400" height="400" viewBox="0 0 400 400" fill="none">
+            <circle cx="200" cy="200" r="180" stroke="#c65d3b" strokeWidth="1" />
+            <circle cx="200" cy="200" r="140" stroke="#c65d3b" strokeWidth="1" />
+            <circle cx="200" cy="200" r="100" stroke="#c65d3b" strokeWidth="1" />
+            <circle cx="200" cy="200" r="60" stroke="#c65d3b" strokeWidth="1" />
+            <circle cx="200" cy="200" r="20" stroke="#c65d3b" strokeWidth="1" />
+          </svg>
         </div>
-      </main>
+      </section>
+
+      <section className="px-4 py-12 sm:px-6">
+        <div className="mx-auto max-w-7xl">
+          <HeritageExplorer />
+        </div>
+      </section>
+
+      <TrustSection />
     </div>
   );
 }
